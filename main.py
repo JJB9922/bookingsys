@@ -20,24 +20,6 @@ def main_menu():
     print("3. View all bookings.\n")
     print("4. Exit.\n")
 
-def check_availability():
-    global noMonday
-    noMonday = False
-    i = 0
-    if exists("database.txt"):
-        with open("database.txt", "r") as db:
-            for line in db:
-                linelist = line.split('|')
-                print(linelist[0])
-            #Count occurences of monday
-                if linelist[0] == 'Monday':
-                    i = i+1
-                    print(i)
-                    if i==3:
-                        noMonday = True
-
-    else: print('')
-
 def add_booking():
     print("\nPick a day (Monday - Sunday).")
     print("Or type exit to return to menu.\n")
