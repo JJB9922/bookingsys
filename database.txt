@@ -1,1 +1,3 @@
-Monday|4pm|Jack
+Monday|9am|Jack
+Monday|11am|Jack
+Monday|6pm|Jack

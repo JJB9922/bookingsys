@@ -9,7 +9,8 @@ a .txt file acts as a database.
 
 
 """
-
+import sys
+from os.path import exists
 
 def main_menu():
     print("~~BJJClub Booking System~~\n")
@@ -19,42 +20,82 @@ def main_menu():
     print("3. View all bookings.\n")
     print("4. Exit.\n")
 
+def check_availability():
+    global noMonday
+    noMonday = False
+    i = 0
+    if exists("database.txt"):
+        with open("database.txt", "r") as db:
+            for line in db:
+                linelist = line.split('|')
+                print(linelist[0])
+            #Count occurences of monday
+                if linelist[0] == 'Monday':
+                    i = i+1
+                    print(i)
+                    if i==3:
+                        noMonday = True
+
+    else: print('')
+
 def add_booking():
-    database = open("database.txt", "w")
-    print("\nPick a day (Monday - Sunday.")
+    print("\nPick a day (Monday - Sunday).")
     print("Or type exit to return to menu.\n")
     day = input()
+    if day==exit:
+        main_menu()
     print("\nPick a time (9am - 6pm).")
     print("Or type exit to return to menu.\n")
     time = input()
+    if time==exit:
+        main_menu()
     print("\nType your name.")
     print("Or type exit to return to menu.\n")
     name = input()
+    if name==exit:
+        main_menu()
 
-    #check if date and time are in use:
-        #Placeholder
+    bookData = day+"|"+time+"|"+name
 
-    if day == 'Monday' or day == 'monday': 
-        database.write("Monday|" + time + "|" + name + "\n")
-        print("Booking created. See you soon!\n")
-    elif day == 'Tuesday' or day == 'tuesday': 
-        database.write("Tuesday|" + time + "|" + name + "\n")
-        print("Booking created. See you soon!\n")
-    elif day == 'Wednesday' or day == 'wednesday': 
-        database.write("Wednesday|" + time + "|" + name + "\n")
-        print("Booking created. See you soon!\n")
-    elif day == 'Thursday' or day == 'thursday': 
-        database.write("Thursday|" + time + "|" + name + "\n")
-        print("Booking created. See you soon!\n")
-    elif day == 'Friday' or day == 'friday': 
-        database.write("Friday|" + time + "|" + name + "\n")
-        print("Booking created. See you soon!\n")
-    elif day == 'Saturday' or day == 'saturday': 
-        database.write("Saturday|" + time + "|" + name + "\n")
-        print("Booking created. See you soon!\n")
-    elif day == 'Sunday' or day == 'sunday': 
-        database.write("Sunday|" + time + "|" + name + "\n")
-        print("Booking created. See you soon!\n")
+    #Check availability
+    with open("database.txt", "r") as database:
+        #Check availability   
+        noDayAvailability = False
+        noTimeAvailability = False 
+        i = 0
+        if exists("database.txt"):
+            with open("database.txt", "r") as db:
+                for line in db:
+                    linelist = line.split('|')
+                    #print(linelist[0])
+                    #Count occurences of monday
+                    if linelist[0] == day:
+                        i = i+1
+                        #print(i)
+                        if i==3:
+                            noDayAvailability = True
+                        elif time==linelist[1]:
+                            noTimeAvailability = True    
+
+    if day == 'Monday' or day == 'monday':
+        day = 'Monday'
+        if exists("database.txt"):
+            with open("database.txt", "a") as database:
+                if noDayAvailability == True:
+                    print('\n'+ day + " is fully booked - please try another day.")
+                    add_booking()
+                elif noDayAvailability == False and noTimeAvailability == True:
+                    print('\n'+ time + " is fully booked - please try another time.")
+                    add_booking()
+                else:
+                    day = 'Monday'
+                    database.write(str(bookData) + "\n")
+                    print("Booking created. See you soon!\n")
+        else: 
+            print ("\nFile does not exist! Creating...\n")
+            with open("database.txt", "w") as database:
+                database.write(str(bookData))
+                print("Booking created. See you soon!\n")
     elif day == 'Exit' or day == 'exit': main()
     else: 
         print("Invalid option! Please try again.\n") 
@@ -68,8 +109,12 @@ def view_bookings():
     print("Placeholder\n")
 
 def debug():
-    print("OPTION VAR: " + option)
-
+    with open('database.txt', 'r') as dbfile:
+        while True:
+            file_EOF = dbfile.read()
+            for i in range (0, file_EOF):
+                print(i)
+ 
 def main():
     main_menu()
     option = input()
@@ -84,5 +129,7 @@ def main():
         print("Exiting...\n")
     else:
         print("Invalid option! Exiting...\n")
+        sys.exit()
+
 
 main()
