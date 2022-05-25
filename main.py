@@ -1,5 +1,5 @@
 """
-BJJ Private booking system
+Private booking system
 
 you can pick the day (mon-sun)
 you can pick a time (9am-5pm / lessons start on the hour)
@@ -16,7 +16,7 @@ import sys
 from os.path import exists
 
 def main_menu():
-    print("\n~~BJJClub Booking System~~\n")
+    print("\n~~Booking System~~\n")
     print("Please pick an option:\n")
     print("1. Create a booking.\n")
     print("2. Remove a booking.\n")
@@ -250,7 +250,7 @@ class Window(Frame):
 def gui():
     root = Tk()
     app = Window(root)
-    root.wm_title("BJJ System")
+    root.wm_title("System")
     root.geometry("320x200")
 
     add_button = ttk.Button(
